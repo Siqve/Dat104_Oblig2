@@ -19,4 +19,8 @@ public class InputControl {
 	private static boolean isValidMobilnummer(String phNr) {
 		return (phNr.length() == 8 && phNr.matches("[0-9]+"));
 	}
+	
+	public static boolean isNullOrEmpty(String s) {
+		return s == null || s.length() == 0;
+	}
 }
