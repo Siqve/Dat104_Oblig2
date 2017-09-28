@@ -10,17 +10,62 @@ import javax.persistence.Table;
 public class Participant {
 	
 	@Id
-	public String phonenumber;
+	private String phonenumber;
 	
 	@Column
-	public String firstname;
+	private String firstname;
 	
 	@Column
-	public String surname;
+	private String surname;
 	
 	@Column
-	public String sex;
+	private String sex;
 	
 	@Column
-	public boolean paid;
+	private boolean paid;
+
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public boolean isPaid() {
+		return paid;
+	}
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
+	}
+	
+	
+	
+	
+	
 }
