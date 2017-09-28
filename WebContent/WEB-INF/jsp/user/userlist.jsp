@@ -5,44 +5,55 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Deltagerliste</title>
+<title>Deltakerliste</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-	<h2>Deltagerliste</h2>
-	<table border="1">
-		<tr bgcolor="#cccccc">
-			<th>Kjønn</th>
-			<th align="left">Navn</th>
-		</tr>
+	<div class="container">
+		<div style="width: 40%; margin: 10px auto">
+			<h1>Heisann ${activeUser.firstname }!</h1>
+			<h3>Dette er deltakerene så langt:</h3>
+			<div style="width: 50%">
+				<table border="1" style="width: 100%">
+					<tr bgcolor="#cccccc">
+						<th>Kjønn</th>
+						<th align="left">Navn</th>
+					</tr>
 
-		<c:if test="${not empty requestScope.users }">
-			<c:forEach items="${requestScope.users }" var="user">
-				<!-- 			tr if-else  -->
-				<c:choose>
-					<c:when test="${user.paid==true}">
-						<tr bgcolor="#ffaaaa">
-					</c:when>
-					<c:otherwise>
-						<tr bgcolor="#b1ffaa">
-					</c:otherwise>
-				</c:choose>
-				<!-- 				td if-else -->
-				<c:choose>
-					<c:when test="${user.sex=='male'}">
-						<td align="center">&#9794;</td>
-					</c:when>
-					<c:otherwise>
-						<td align="center">&#9792;</td>
-					</c:otherwise>
-				</c:choose>
-				<td>${user.firstname } ${user.surname }</td>
-				</tr>
-			</c:forEach>
-		</c:if>
+					<c:if test="${not empty requestScope.users }">
+						<c:forEach items="${requestScope.users }" var="user">
+							<!-- 			tr if-else  -->
+							<c:choose>
+								<c:when test="${user.paid==true}">
+									<tr bgcolor="#ffaaaa">
+								</c:when>
+								<c:otherwise>
+									<tr bgcolor="#b1ffaa">
+								</c:otherwise>
+							</c:choose>
+							<!-- 				td if-else -->
+							<c:choose>
+								<c:when test="${user.sex=='male'}">
+									<td align="center">&#9794;</td>
+								</c:when>
+								<c:otherwise>
+									<td align="center">&#9792;</td>
+								</c:otherwise>
+							</c:choose>
+							<td>${user.firstname }${user.surname }</td>
+							</tr>
+						</c:forEach>
+					</c:if>
 
-	</table>
-	<p>
-		<a href="ferdig.html">Ferdig</a>
-	</p>
+				</table>
+				<form method="post" style="margin-top: 10px;">
+					<input type="submit" name="logout" value="Ferdig"
+						class="btn btn-lg btn-primary btn-block" />
+				</form>
+			</div>
+
+		</div>
+	</div>
 </body>
 </html>
