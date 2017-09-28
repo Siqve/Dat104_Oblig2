@@ -17,22 +17,22 @@
 	<div class="container">
 		<h2 style="text-align: center">Påmeldingsbekreftelse</h2>
 		<div style="width: 20%; margin: 20px auto">
-			<p>Påmeldingen er mottatt for</p>
+		<p>Påmeldingen er mottatt for</p>
 
-			<c:if test="${not empty participant}">
-				<p>
-					<c:out value="${participant.firstname }" />
-					<c:out value="${participant.surname }" />
-					<br />
-				<p>
-					<c:out value="${participant.phonenumber }" />
-				</p>
-			</c:if>
-
+		<c:if test="${not empty participant}">
 			<p>
-				<b>NB! Husk å betale til kassereren før festen!</b>
+				<c:out value="${participant.firstname }" />
+				<c:out value="${participant.surname }" />
+				<br />
+			<p>
+				<c:out value="${participant.phonenumber }" />
 			</p>
-			<a href="deltagerliste.html">Gå til deltagerlisten</a>
+		</c:if>
+
+		<p>
+			<b>NB! Husk å betale til kassereren før festen!</b>
+		</p>
+		<a href="deltagerliste.html">Gå til deltagerlisten</a>
 		</div>
 	</div>
 </body>
