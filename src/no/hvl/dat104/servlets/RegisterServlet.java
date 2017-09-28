@@ -19,10 +19,14 @@ public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Sjekk om alle parameter er fylt ut + gyldige
+		// Påmeldingsbekreftelse
+		// Redirect til login-servlet/deltakarliste
+		
 		
 		// Forward to registerform.jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_JSP_URL);
-		dispatcher.forward(request,response);
+		dispatcher.forward(request,response);	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
