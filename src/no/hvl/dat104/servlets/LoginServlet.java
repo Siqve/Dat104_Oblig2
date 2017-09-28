@@ -16,7 +16,7 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (SessionControl.isLoggedIn(request.getCookies())) {
+		if (SessionControl.isLoggedIn(request)) {
 			//Send to deltaker list
 		}
 		request.getRequestDispatcher(URLMappings.LOGIN_JSP_URL).forward(request, response);
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
 		//Dummydata
 		if (mobilnr.equals("97088875")) {
 			//Gucci
-			request.getSession().setAttribute("activeUser", mobilnr);
+			SessionControl.logInUser(request, mobilnr);
 		} else {
 			FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
 		}
