@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
 /**
@@ -17,21 +18,32 @@ import no.hvl.dat104.utils.URLMappings;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Sjekk om alle parameter er fylt ut + gyldige
-		// Påmeldingsbekreftelse
-		// Redirect til login-servlet/deltakarliste
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		if(checkAndRegister(request)) {
+			// Register user/update DB accordingly and send to confirmation.jsp
+		}
 		
 		// Forward to registerform.jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_JSP_URL);
-		dispatcher.forward(request,response);	
+		dispatcher.forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
+	private boolean checkAndRegister(HttpServletRequest request) {
+
+		String fornavn, etternavn, mobilnummer;
+		fornavn = request.getParameter("fornavn");
+		etternavn = request.getParameter("etternavn");
+		mobilnummer = request.getParameter("mobilnummer");
+
+		return (SessionControl.isValidData(fornavn, etternavn, mobilnummer));
+	}
 }
