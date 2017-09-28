@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
@@ -41,11 +42,11 @@ public class RegisterServlet extends HttpServlet {
 
 	private boolean checkAndRegister(HttpServletRequest request) {
 
-		String fornavn, etternavn, mobilnummer;
-		fornavn = request.getParameter("fornavn");
-		etternavn = request.getParameter("etternavn");
-		mobilnummer = request.getParameter("mobilnummer");
+		String firstname, surname, phonenumber;
+		firstname = request.getParameter("firstname");
+		surname = request.getParameter("surname");
+		phonenumber = request.getParameter("phonenumber");
 
-		return (SessionControl.isValidData(fornavn, etternavn, mobilnummer));
+		return (InputControl.isValidData(firstname, surname, phonenumber));
 	}
 }
