@@ -19,23 +19,23 @@
 			<c:forEach items="${requestScope.users }" var="user">
 				<!-- 			tr if-else  -->
 				<c:choose>
-					<c:when test="${user.betalt==true}">
+					<c:when test="${user.paid==true}">
 						<tr bgcolor="#ffaaaa">
 					</c:when>
 					<c:otherwise>
-						<tr>
+						<tr bgcolor="#b1ffaa">
 					</c:otherwise>
 				</c:choose>
 				<!-- 				td if-else -->
 				<c:choose>
-					<c:when test="${user.gender=='male'}">
+					<c:when test="${user.sex=='male'}">
 						<td align="center">&#9794;</td>
 					</c:when>
 					<c:otherwise>
 						<td align="center">&#9792;</td>
 					</c:otherwise>
 				</c:choose>
-				<td>${user.name }</td>
+				<td>${user.firstname } ${user.surname }</td>
 				</tr>
 			</c:forEach>
 		</c:if>
