@@ -16,7 +16,6 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		if (SessionControl.isLoggedIn(request.getCookies())) {
 			//Send to deltaker list
 		}
@@ -25,20 +24,27 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		checkAndLogin(request);
-		response.sendRedirect("login");
+		response.sendRedirect(URLMappings.LOGIN_URL);
 	}
 	
 	
 	public void checkAndLogin(HttpServletRequest request) {
 		String mobilnr = request.getParameter("mobilnr");
 		if (mobilnr == null || mobilnr.length() == 0) {
-			FlashUtil.addInfoFlash(request, "Vennligst oppgi mobilnr!");
+			FlashUtil.addInfoFlash(request, "Vennligst oppgi mobilnummer!");
 			return;
 		}
 		
-		//TODO: JPA hent alle passordet
+		//TODO: JPA hent alle passorder 
+		//Bruker bruker = "SELECT * FROM "brukere" WHERE mobilnr = " + mobilnr
+		//			request.getSession().setAttribute("activeUser", bruker);
 		
-		
-		
+		//Dummydata
+		if (mobilnr.equals("97088875")) {
+			//Gucci
+			request.getSession().setAttribute("activeUser", mobilnr);
+		} else {
+			FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
+		}
 	}
 }
