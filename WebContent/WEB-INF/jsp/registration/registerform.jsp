@@ -7,17 +7,17 @@
 <title>Påmelding</title>
 </head>
 <body>
-	<form action="/register">
+	<form action="/register" method="post">
 		<fieldset>
 			<legend>Personlige data</legend>
 			<p>
-				Fornavn: <input type="text" name="fornavn" value="" />
+				Fornavn: <input type="text" name="firstname" value="" />
 			</p>
 			<p>
-				Etternavn: <input type="text" name="etternavn" value="" />
+				Etternavn: <input type="text" name="surname" value="" />
 			</p>
 			<p>
-				Mobil (8 siffer): <input type="text" name="mobil" value="" />
+				Mobil (8 siffer): <input type="text" name="phonenumber" value="" />
 			</p>
 			<p>
 				Kjønn: <input type="radio" name="kjonn" value="mann"
