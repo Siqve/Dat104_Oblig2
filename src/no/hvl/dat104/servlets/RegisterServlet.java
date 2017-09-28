@@ -24,6 +24,8 @@ public class RegisterServlet extends HttpServlet {
 
 		if(checkAndRegister(request)) {
 			// Register user/update DB accordingly and send to confirmation.jsp
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_CONF_JSP_URL);
+			dispatcher.forward(request, response);
 		}
 		
 		// Forward to registerform.jsp
