@@ -22,9 +22,15 @@ public class RegisterServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		//TODO: get user-object from registration and check if not null
-		//TODO: if registeredObject != null --> forward to confirmation page
+
+		// TODO: get user-object from registration and check if not null
+		// TODO: if registeredObject != null --> forward to confirmation page
+		if (request.getSession().getAttribute("regUsr") != null
+				&& request.getSession().getAttribute("regUsr").equals("usr")) {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_CONF_JSP_URL);
+			dispatcher.forward(request, response);
+		}
+
 		
 		
 		// Forward to registerform.jsp
@@ -34,18 +40,17 @@ public class RegisterServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		if (checkAndRegister(request)) {
 			// System.out.println("----BREAKPOINT----");
 			// Register user/update DB accordingly and send to confirmation.jsp
-			
+
 			// TODO: Must set session attribute before redirecting
+			request.getSession().setAttribute("regUsr", "usr");
 			response.sendRedirect(URLMappings.REGISTER_URL);
 		} else {
 			response.sendRedirect(URLMappings.REGISTER_URL);
 		}
-		
-		response.sendRedirect(URLMappings.REGISTER_URL);
 	}
 
 	private boolean checkAndRegister(HttpServletRequest request) {
