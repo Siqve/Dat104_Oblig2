@@ -1,7 +1,5 @@
 package no.hvl.dat104.utils;
 
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 
 public class SessionControl {
