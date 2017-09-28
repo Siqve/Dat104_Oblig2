@@ -7,7 +7,7 @@
 <title>Påmelding</title>
 </head>
 <body>
-	<form action="/register" method="post">
+	<form method="post">
 		<fieldset>
 			<legend>Personlige data</legend>
 			<p>
