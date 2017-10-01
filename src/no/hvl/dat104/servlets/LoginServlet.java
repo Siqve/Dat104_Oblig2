@@ -21,18 +21,21 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Antar at login er ett brukstilfelle, men at aktør enten er "deltaker" eller
-		// "kasserer".
-		// Bruker derfor samme servlet.
+		// "kasserer". Bruker derfor samme servlet.
 
-		if (SessionControl.isLoggedIn(request)) {
+		if (SessionControl.isLoggedInUser(request)) {
 			response.sendRedirect(URLMappings.USERLIST_URL);
+			return;
+		} else if (SessionControl.isLoggedInCashier(request)) {
+			response.sendRedirect(URLMappings.PAYMENTLIST_URL);
 			return;
 		}
 
 		if (request.getSession().isNew()) {
 			setParticipantLogin(request);
 		} else {
-			if (request.getParameter("loginmethod") == null) {
+			if (request.getParameter("loginmethod") == null
+					|| request.getParameter("loginmethod").equals("participant")) {
 				// TODO: Set session-attributt "loginmethod" = cashier
 				setParticipantLogin(request);
 			} else if (request.getParameter("loginmethod").equals("cashier")) {
@@ -47,7 +50,8 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO: Husk meg button
-		checkAndLogin(request);
+		// TODO: Velge check-metode; "participant" eller "cashier"
+		checkAndLogin(request, (String) request.getSession().getAttribute("loginmethod"));
 		response.sendRedirect(URLMappings.LOGIN_URL);
 	}
 
@@ -59,34 +63,55 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	private void setParticipantLogin(HttpServletRequest request) {
-		request.getSession().setAttribute("loginmethod", null);
+		request.getSession().setAttribute("loginmethod", "participant");
 		request.getSession().setAttribute("logintext", "Logg inn: ");
 		request.getSession().setAttribute("inputtype", "phonenumber");
 		request.getSession().setAttribute("inputplaceholder", "Mobilnummer");
 	}
 
-	public void checkAndLogin(HttpServletRequest request) {
-		String mobilnr = request.getParameter("phonenumber");
-		if (InputControl.isNullOrEmpty(mobilnr)) {
-			FlashUtil.addInfoFlash(request, "Vennligst oppgi mobilnummer!");
-			return;
-		}
+	public void checkAndLogin(HttpServletRequest request, String loginmethod) {
 
-		// TODO: JPA hent alle passorder
-		// Bruker bruker = "SELECT * FROM "brukere" WHERE mobilnr = " + mobilnr
-		// request.getSession().setAttribute("activeUser", bruker);
+		if (loginmethod.equals("participant")) { // Utfør checkAndLogin for "participant"
 
-		// Dummydata
-		if (mobilnr.equals("97088875")) {
-			Participant part = new Participant();
-			part.setFirstname("bob");
-			part.setSurname("bobbson");
-			part.setPhonenumber(mobilnr);
-			part.setSex("male");
-			part.setPaid(false);
-			SessionControl.logInUser(request, part);
-		} else {
-			FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
+			String mobilnr = request.getParameter("phonenumber");
+			if (InputControl.isNullOrEmpty(mobilnr)) {
+				FlashUtil.addInfoFlash(request, "Vennligst oppgi mobilnummer!");
+				return;
+			}
+
+			// TODO: JPA hent alle passorder
+			// Bruker bruker = "SELECT * FROM "brukere" WHERE mobilnr = " + mobilnr
+			// request.getSession().setAttribute("activeUser", bruker);
+
+			// Dummydata
+			if (mobilnr.equals("97088875")) {
+				Participant part = new Participant();
+				part.setFirstname("bob");
+				part.setSurname("bobbson");
+				part.setPhonenumber(mobilnr);
+				part.setSex("male");
+				part.setPaid(false);
+				SessionControl.logInUser(request, part);
+			} else {
+				FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
+			}
+			
+		} else if (loginmethod.equals("cashier")) { // Utfør checkAndLogin for "cashier"
+
+			String passord = request.getParameter("cashierpwd");
+			if (InputControl.isNullOrEmpty(passord)) {
+				FlashUtil.addInfoFlash(request, "Vennligst oppgi passord.");
+				return;
+			}
+
+			// TODO: hent initparam cashier-passord
+
+			// Dummydata
+			if (passord.equals("pass")) {
+				SessionControl.logInCashier(request);
+			} else {
+				FlashUtil.addErrorFlash(request, "Feil passord!");
+			}
 		}
 	}
 }

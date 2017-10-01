@@ -21,7 +21,7 @@
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<c:choose>
-					<c:when test="${empty sessionScope.loginmethod}">
+					<c:when test="${sessionScope.loginmethod eq 'participant'}">
 						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
 								Meld deg på</a></li>
 						<li><a href="?loginmethod=cashier"><span
