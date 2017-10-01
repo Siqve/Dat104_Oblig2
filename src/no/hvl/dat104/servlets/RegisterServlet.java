@@ -1,7 +1,6 @@
 package no.hvl.dat104.servlets;
 
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import no.hvl.dat104.db.Participant;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
+import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
 /**
@@ -26,7 +26,8 @@ public class RegisterServlet extends HttpServlet {
 
 		// TODO: get participant-object from registration and check if not null
 		// TODO: if registeredObject != null --> forward to confirmation page
-		if (!request.getSession().isNew() && request.getSession().getAttribute("participant") != null) {
+		if (!request.getSession().isNew() && request.getSession().getAttribute("activeUser") != null) {
+			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_CONF_JSP_URL);
 			dispatcher.forward(request, response);
 		}
@@ -48,7 +49,7 @@ public class RegisterServlet extends HttpServlet {
 		// TODO: del opp inputsjekking og lag feilmelding for kvart tilfelle
 
 		if (!checkParameters(request)) {
-			FlashUtil.addErrorFlash(request, "Alle felter mÃ¥ fylles ut!");
+			FlashUtil.addErrorFlash(request, "Alle felter må fylles ut!");
 
 		} else {
 
@@ -58,7 +59,9 @@ public class RegisterServlet extends HttpServlet {
 			surname = request.getParameter("surname");
 			phonenumber = request.getParameter("phonenumber");
 
-			String formatError = "Feil format pÃ¥ ett eller flere av inndatafeltene. PrÃ¸v igjen.";
+			System.out.println(firstname + ", " + surname);
+			
+			String formatError = "Feil format på ett eller flere av inndatafeltene. Prøv igjen.";
 
 			if (!InputControl.isValidFornavn(firstname))
 				FlashUtil.addErrorFlash(request, formatError);
@@ -79,9 +82,12 @@ public class RegisterServlet extends HttpServlet {
 		part.setPhonenumber(request.getParameter("phonenumber"));
 		part.setSex(request.getParameter("sex"));
 	
-		request.getSession().setAttribute("participant", part);
+		// TODO: Persist to DB
+		
+		SessionControl.logInUser(request, part);
 	}
 
+	// Burde kanskje vere eigen metode i InputControl-klassen
 	private boolean checkParameters(HttpServletRequest request) {
 		String firstname = request.getParameter("firstname");
 		String surname = request.getParameter("surname");
