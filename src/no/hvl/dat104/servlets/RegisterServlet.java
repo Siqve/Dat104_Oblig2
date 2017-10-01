@@ -1,7 +1,6 @@
 package no.hvl.dat104.servlets;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.URLMappings;
 
@@ -22,11 +23,14 @@ public class RegisterServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		//TODO: get user-object from registration and check if not null
-		//TODO: if registeredObject != null --> forward to confirmation page
-		
-		
+
+		// TODO: get participant-object from registration and check if not null
+		// TODO: if registeredObject != null --> forward to confirmation page
+		if (!request.getSession().isNew() && request.getSession().getAttribute("participant") != null) {
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_CONF_JSP_URL);
+			dispatcher.forward(request, response);
+		}
+
 		// Forward to registerform.jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_JSP_URL);
 		dispatcher.forward(request, response);
@@ -34,37 +38,56 @@ public class RegisterServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		if (checkAndRegister(request)) {
-			// System.out.println("----BREAKPOINT----");
-			// Register user/update DB accordingly and send to confirmation.jsp
-			
-			// TODO: Must set session attribute before redirecting
-			response.sendRedirect(URLMappings.REGISTER_URL);
-		} else {
-			response.sendRedirect(URLMappings.REGISTER_URL);
-		}
-		
+
+		checkAndRegister(request);
 		response.sendRedirect(URLMappings.REGISTER_URL);
 	}
 
-	private boolean checkAndRegister(HttpServletRequest request) {
+	private void checkAndRegister(HttpServletRequest request) {
 
-		if (checkParameters(request)) {
-			System.out.println("----BREAKPOINT----");
+		// TODO: del opp inputsjekking og lag feilmelding for kvart tilfelle
+
+		if (!checkParameters(request)) {
+			FlashUtil.addErrorFlash(request, "Alle felter må fylles ut!");
+
+		} else {
+
 			String firstname, surname, phonenumber;
+
 			firstname = request.getParameter("firstname");
 			surname = request.getParameter("surname");
 			phonenumber = request.getParameter("phonenumber");
 
-			return (InputControl.isValidData(firstname, surname, phonenumber));
-		}
+			String formatError = "Feil format på ett eller flere av inndatafeltene. Prøv igjen.";
 
-		return false;
+			if (!InputControl.isValidFornavn(firstname))
+				FlashUtil.addErrorFlash(request, formatError);
+			else if (!InputControl.isValidEtternavn(surname))
+				FlashUtil.addErrorFlash(request, formatError);
+			else if (!InputControl.isValidMobilnummer(phonenumber))
+				FlashUtil.addErrorFlash(request, formatError);
+			else
+				registerParticipant(request);
+		}
+	}
+
+	private void registerParticipant(HttpServletRequest request) {
+		// TODO: Add mechanics for registering participant to DB here
+		Participant part = new Participant();
+		part.setFirstname(request.getParameter("firstname"));
+		part.setSurname(request.getParameter("surname"));
+		part.setPhonenumber(request.getParameter("phonenumber"));
+		part.setSex(request.getParameter("sex"));
+	
+		request.getSession().setAttribute("participant", part);
 	}
 
 	private boolean checkParameters(HttpServletRequest request) {
-		return (request.getParameter("firstname") != null && request.getParameter("surname") != null
-				&& request.getParameter("phonenumber") != null);
+		String firstname = request.getParameter("firstname");
+		String surname = request.getParameter("surname");
+		String phonenumber = request.getParameter("phonenumber");
+
+		return (!InputControl.isNullOrEmpty(firstname) && !InputControl.isNullOrEmpty(surname)
+				&& !InputControl.isNullOrEmpty(phonenumber));
 	}
 }
