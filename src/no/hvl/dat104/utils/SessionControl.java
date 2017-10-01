@@ -2,14 +2,20 @@ package no.hvl.dat104.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
+import no.hvl.dat104.db.Participant;
+
 public class SessionControl {
 
 	public static boolean isLoggedIn(HttpServletRequest request) {
-		return request != null && request.getAttribute("activeUser") != null;
+		return request != null && request.getSession().getAttribute("activeUser") != null;
 	}
 
-	//TODO: change String mobilnr to Bruker bruker
-	public static void logInUser(HttpServletRequest request, String mobilnr) {
-		request.getSession().setAttribute("activeUser", mobilnr);
+	public static void logInUser(HttpServletRequest request, Participant participant) {
+		request.getSession().setAttribute("activeUser", participant);
 	}
+
+	public static void logOutUser(HttpServletRequest request) {
+		request.getSession().removeAttribute("activeUser");
+	}
+
 }
