@@ -7,20 +7,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(schema = "oblig2", name = "deltaker")
-public class Participant {
-	
+public class Participant implements Comparable<Participant> {
+
 	@Id
 	private String phonenumber;
-	
+
 	@Column
 	private String firstname;
-	
+
 	@Column
 	private String surname;
-	
+
 	@Column
 	private String sex;
-	
+
 	@Column
 	private boolean paid;
 
@@ -63,9 +63,30 @@ public class Participant {
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
-	
-	
-	
-	
-	
+
+	@Override
+	public int compareTo(Participant part) {
+		String surnameThis = surname;
+		String firstnameThis = firstname;
+		String surnameOther = part.getSurname();
+		String firstnameOther = part.getSurname();
+
+		int surnameCompared = surnameThis.compareTo(surnameOther);
+		int firstnameCompared = firstnameThis.compareTo(firstnameOther);
+
+		if (surnameCompared == 0) {
+			if (firstnameCompared == 0) {
+				return 0;
+			} else if (firstnameCompared > 0) {
+				return 1;
+			} else {
+				return -1;
+			}
+		} else if(surnameCompared > 1) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+
 }
