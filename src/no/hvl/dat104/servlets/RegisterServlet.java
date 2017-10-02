@@ -1,6 +1,8 @@
 package no.hvl.dat104.servlets;
 
 import java.io.IOException;
+
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.db.ParticipantEAO;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
@@ -21,6 +24,9 @@ import no.hvl.dat104.utils.URLMappings;
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	private ParticipantEAO partEAO;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -62,6 +68,7 @@ public class RegisterServlet extends HttpServlet {
 			System.out.println(firstname + ", " + surname);
 			
 			String formatError = "Feil format på ett eller flere av inndatafeltene. Prøv igjen.";
+			String alreadyExistsError = "Telefonnummeret er allerede i bruk. Prøv igjen.";
 
 			if (!InputControl.isValidFornavn(firstname))
 				FlashUtil.addErrorFlash(request, formatError);
@@ -69,12 +76,16 @@ public class RegisterServlet extends HttpServlet {
 				FlashUtil.addErrorFlash(request, formatError);
 			else if (!InputControl.isValidMobilnummer(phonenumber))
 				FlashUtil.addErrorFlash(request, formatError);
+			else if (partEAO.phonenumberExists(phonenumber))
+				FlashUtil.addErrorFlash(request, alreadyExistsError);
 			else
 				registerParticipant(request);
 		}
 	}
 
 	private void registerParticipant(HttpServletRequest request) {
+		
+		// Må ha noke try/catch testing her også dersom DB-problem
 		// TODO: Add mechanics for registering participant to DB here
 		Participant part = new Participant();
 		part.setFirstname(request.getParameter("firstname"));
@@ -83,6 +94,9 @@ public class RegisterServlet extends HttpServlet {
 		part.setSex(request.getParameter("sex"));
 	
 		// TODO: Persist to DB
+		// Try
+		partEAO.addParticipant(part);
+		// Catch
 		
 		SessionControl.logInUser(request, part);
 	}
