@@ -45,25 +45,28 @@
 										<c:set var="nr" value="${user.phonenumber}" /> 
 										${fn:substring(nr, 0, 3) }&nbsp;${fn:substring(nr, 3, 5) }&nbsp;${fn:substring(nr, 5, 8) }
 									</td>
-									<td style="text-align: center;"><c:choose>
-											<c:when test="${user.paid eq true}">
-												<c:out value="Betaling mottatt." />
-											</c:when>
-
-											<c:otherwise>
-												<form method="post">
+									<td style="text-align: center;">
+										<form method="post">
+											<input type="hidden" name="payer"
+												value="${user.phonenumber}">
+											<c:choose>
+												<c:when test="${user.paid eq false}">
 													<input type="submit" name="pay" value="Registrer betaling"
-														class="btn btn-sm btn-default btn-block"> <input
-														type="hidden" name="payer" value="${user.phonenumber}" />
-												</form>
-											</c:otherwise>
-										</c:choose></td>
+														class="btn btn-sm btn-danger btn-block">
+												</c:when>
+												<c:otherwise>
+													<input type="submit" name="pay" value="Betaling registrert"
+														class="btn btn-sm btn-success btn-block">
+												</c:otherwise>
+											</c:choose>
+										</form>
+									</td>
 								</tr>
 							</c:forEach>
 						</c:if>
 					</tbody>
 				</table>
-				<form method="post" style="margin: 10px auto; width: ">
+				<form method="post" style="margin: 10px auto; width: 50%">
 					<input type="submit" name="logout" value="Ferdig"
 						class="btn btn-md btn-primary btn-block" />
 				</form>
