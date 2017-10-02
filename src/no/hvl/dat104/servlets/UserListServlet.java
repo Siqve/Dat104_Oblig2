@@ -21,7 +21,7 @@ public class UserListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (!SessionControl.isLoggedInUser(request)) {
+		if (!SessionControl.isLoggedIn(request)) {
 			response.sendRedirect(URLMappings.LOGIN_URL);
 			return;
 		}
