@@ -3,21 +3,17 @@ package no.hvl.dat104.utils;
 import java.util.regex.Pattern;
 
 public class InputControl {
-
-	public static boolean isValidData(String fName, String sName, String phNr) {
-		return (isValidFornavn(fName) && isValidEtternavn(sName) && isValidMobilnummer(phNr));
+	
+	public static boolean isValidFornavn(String fName) {
+		return Pattern.matches("^[A-ZÆØÅ][a-zæøå -]{1,19}$", fName);
 	}
 	
-	private static boolean isValidFornavn(String fName) {
-		return Character.isUpperCase(fName.charAt(0)) && Pattern.matches("[a-zA-Z]+", fName);
+	public static boolean isValidEtternavn(String sName) {
+		return Pattern.matches("^[A-ZÆØÅ][a-zæøå-]{1,19}$", sName);
 	}
 	
-	private static boolean isValidEtternavn(String sName) {
-		return Character.isUpperCase(sName.charAt(0)) && Pattern.matches("[a-zA-Z]+", sName);
-	}
-	
-	private static boolean isValidMobilnummer(String phNr) {
-		return (phNr.length() == 8 && phNr.matches("[0-9]+"));
+	public static boolean isValidMobilnummer(String phNr) {
+		return (phNr.matches("[0-9]{8}"));
 	}
 	
 	public static boolean isNullOrEmpty(String s) {

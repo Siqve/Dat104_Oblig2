@@ -20,19 +20,33 @@
 				<a class="navbar-brand" href="#">Fest!</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-						Meld deg på</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
-						Kasserer Login</a></li>
+				<c:choose>
+					<c:when test="${requestScope.loginmethod eq 'participant'}">
+						<li><a href="register"><span class="glyphicon glyphicon-user"></span>
+								Meld deg på</a></li>
+						<li><a href="?cashier"><span
+								class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>
+					</c:when>
+
+					<c:when test="${requestScope.loginmethod eq 'cashier'}">
+						<li><a href="."><span class="glyphicon glyphicon-log-in"></span>
+								Deltaker Login</a></li>
+					</c:when>
+				</c:choose>
 			</ul>
 		</div>
 	</nav>
 	<div class="container">
-		<h1 style="text-align: center">Logg inn:</h1>
+		<h1 style="text-align: center">
+		
+		<c:out value="${requestScope.logintext}" />
+		
+		</h1>
 		<div style="width: 20%; margin: 20px auto">
 			<form method="POST">
 				<div class="form-group">
-					<input name="mobilnr" type="password" placeholder="Mobilnummer"
+					<input name="${requestScope.inputtype}" type="password"
+						placeholder="${requestScope.inputplaceholder}"
 						class="form-control">
 				</div>
 				<div class="checkbox">
