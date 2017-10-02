@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.db.ParticipantEAO;
 import no.hvl.dat104.utils.DataUtil;
 import no.hvl.dat104.utils.FlashUtil;
+import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
@@ -20,6 +23,9 @@ import no.hvl.dat104.utils.URLMappings;
 public class PaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	ParticipantEAO partEAO;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (!SessionControl.isLoggedInCashier(request)) {
@@ -28,31 +34,8 @@ public class PaymentServlet extends HttpServlet {
 		}
 
 		// TODO: JPA List<Deltaker> deltakere = hente liste over alle deltakere
-		List<Participant> participants = new ArrayList<Participant>();
-		Participant part1 = new Participant();
-		part1.setPhonenumber("12345678");
-		part1.setFirstname("bob");
-		part1.setSurname("bobbson");
-		part1.setSex(true);
-		part1.setPaid(false);
-		participants.add(part1);
-
-		Participant part2 = new Participant();
-		part2.setPhonenumber("87654321");
-		part2.setFirstname("bob");
-		part2.setSurname("bobbsen");
-		part2.setSex(true);
-		part2.setPaid(true);
-		participants.add(part2);
-
-		Participant part3 = new Participant();
-		part3.setPhonenumber("87654321");
-		part3.setFirstname("anne");
-		part3.setSurname("annesen");
-		part3.setSex(false);
-		part3.setPaid(false);
-		participants.add(part3);
-
+		
+		List<Participant> participants = new ArrayList<>(partEAO.listAllParticipants());
 		DataUtil.sortList(participants);
 
 		request.setAttribute("participants", participants);
@@ -61,12 +44,17 @@ public class PaymentServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String logout = request.getParameter("logout");
-
+		String payer;
 		// Logout has been pressed
-		if (logout != null) {
+		if (request.getParameter("logout") != null) {
 			SessionControl.logOutCashier(request);
 			FlashUtil.addInfoFlash(request, "Du har blitt logget ut!");
+		} else if ((payer = request.getParameter("payer")) != null && InputControl.isValidMobilnummer(payer)) {
+			Participant part = partEAO.findParticipant(request.getParameter("payer"));
+			if (part != null) {
+				part.setPaid(!part.isPaid());
+				partEAO.updateParticipant(part);
+			}
 		}
 		response.sendRedirect(URLMappings.PAYMENTLIST_URL);
 		
