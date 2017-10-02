@@ -99,7 +99,7 @@ public class LoginServlet extends HttpServlet {
 				part.setFirstname("bob");
 				part.setSurname("bobbson");
 				part.setPhonenumber(mobilnr);
-				part.setSex("male");
+				part.setSex(true);
 				part.setPaid(false);
 				SessionControl.logInUser(request, part);
 			} else {
