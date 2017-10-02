@@ -47,8 +47,8 @@
 									</td>
 									<td style="text-align: center;">
 										<form method="post">
-											<input type="hidden" name="payer"
-												value="${user.phonenumber}">
+												<input type="hidden" name="payer"
+													value="${user.phonenumber}">
 											<c:choose>
 												<c:when test="${user.paid eq false}">
 													<input type="submit" name="pay" value="Registrer betaling"
