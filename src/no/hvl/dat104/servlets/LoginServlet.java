@@ -47,8 +47,13 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO: Husk meg button
-		checkAndLogin(request, request.getParameter("cashier"));
-		response.sendRedirect(URLMappings.LOGIN_URL);
+		boolean cashier = getHiddenBoolParam(request.getParameter("cashier"));
+		checkAndLogin(request, cashier);
+		if (cashier) {
+			response.sendRedirect(URLMappings.LOGIN_URL_CASHIER);
+		} else {
+			response.sendRedirect(URLMappings.LOGIN_URL);
+		}
 	}
 
 	private void setCashierLogin(HttpServletRequest request) {
@@ -64,15 +69,18 @@ public class LoginServlet extends HttpServlet {
 		request.setAttribute("inputtype", "phonenumber");
 		request.setAttribute("inputplaceholder", "Mobilnummer");
 	}
-
-	public void checkAndLogin(HttpServletRequest request, String cashierParsed) {
-		boolean cashier;
+	
+	private boolean getHiddenBoolParam(String param) {
+		boolean val;
 		try {
-			cashier = Boolean.valueOf(cashierParsed);
+			val = Boolean.valueOf(param);
 		} catch (Exception e) {
-			cashier = false;
+			val = false;
 		}
-		
+		return val;
+	}
+
+	public void checkAndLogin(HttpServletRequest request, boolean cashier) {
 		if (!cashier) { // Utfør checkAndLogin for "participant"
 
 			String mobilnr = request.getParameter("phonenumber");
@@ -101,7 +109,7 @@ public class LoginServlet extends HttpServlet {
 		} else { // Utfør checkAndLogin for "cashier"
 
 			// request.getParameter("cashierpwd");
-			String passord = getServletConfig().getInitParameter("cashierpwd");
+			String passord = request.getParameter("cashierpwd");
 
 			if (InputControl.isNullOrEmpty(passord)) {
 				FlashUtil.addInfoFlash(request, "Vennligst oppgi passord.");
@@ -111,7 +119,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO: hent initparam cashier-passord
 
 			// Dummydata
-			if (passord.equals("pass")) {
+			if (passord.equals(getServletConfig().getInitParameter("cashierpwd"))) {
 				SessionControl.logInCashier(request);
 			} else {
 				FlashUtil.addErrorFlash(request, "Feil passord!");
