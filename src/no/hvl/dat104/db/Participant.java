@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "oblig2", name = "deltaker")
+@Table(schema = "Dat104_Obl2_Gr12", name = "participant")
 public class Participant implements Comparable<Participant> {
 
 	@Id
@@ -82,7 +82,7 @@ public class Participant implements Comparable<Participant> {
 			} else {
 				return -1;
 			}
-		} else if(surnameCompared > 1) {
+		} else if (surnameCompared > 1) {
 			return 1;
 		} else {
 			return -1;
