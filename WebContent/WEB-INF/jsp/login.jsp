@@ -50,10 +50,6 @@
 						placeholder="${requestScope.inputplaceholder}"
 						class="form-control">
 				</div>
-				<div class="checkbox">
-					<label><input type="checkbox" name="remember" value="1">Husk
-						meg</label>
-				</div>
 				<input type="submit" value="Logg inn"
 					class="btn btn-lg btn-primary btn-block" />
 			</form>

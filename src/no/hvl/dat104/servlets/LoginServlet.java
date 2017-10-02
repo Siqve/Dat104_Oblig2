@@ -46,7 +46,6 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO: Husk meg button
 		boolean cashier = getHiddenBoolParam(request.getParameter("cashier"));
 		checkAndLogin(request, cashier);
 		if (cashier) {
