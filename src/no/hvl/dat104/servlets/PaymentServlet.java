@@ -65,10 +65,11 @@ public class PaymentServlet extends HttpServlet {
 
 		// Logout has been pressed
 		if (logout != null) {
-			SessionControl.logOutUser(request);
+			SessionControl.logOutCashier(request);
 			FlashUtil.addInfoFlash(request, "Du har blitt logget ut!");
 		}
-
+		response.sendRedirect(URLMappings.PAYMENTLIST_URL);
+		
 		// TODO: Registrer og utfør betaling
 		// TODO: Hent parameter fra request som bestemmer hvilken "participant" som skal
 		// betale

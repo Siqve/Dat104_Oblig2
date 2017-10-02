@@ -3,7 +3,7 @@ package no.hvl.dat104.utils;
 public class URLMappings {
 	
 	public static final String LOGIN_URL = "./";
-	public static final String LOGIN_URL_CASHIER = "./?loginmethod=cashier";
+	public static final String LOGIN_URL_CASHIER = "./?cashier";
 	public static final String LOGIN_JSP_URL = "/WEB-INF/jsp/login.jsp";
 	
 	public static final String REGISTER_URL = "register";

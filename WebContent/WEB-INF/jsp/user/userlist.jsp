@@ -41,9 +41,9 @@
 									<td align="center">&#9792;</td>
 								</c:otherwise>
 							</c:choose>
-							<td>${user.firstname }${user.surname }</td>
+							<td>${user.firstname } ${user.surname }</td>
 							</tr>
-						</c:forEach>
+						</c:forEach> 
 					</c:if>
 
 				</table>
