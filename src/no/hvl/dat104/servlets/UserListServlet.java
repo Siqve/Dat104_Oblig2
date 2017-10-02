@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.db.ParticipantEAO;
+import no.hvl.dat104.utils.DataUtil;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
@@ -19,6 +22,9 @@ import no.hvl.dat104.utils.URLMappings;
 public class UserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@EJB
+	ParticipantEAO partEAO;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (!SessionControl.isLoggedInUser(request)) {
@@ -26,16 +32,13 @@ public class UserListServlet extends HttpServlet {
 			return;
 		}
 		
-		// TODO: JPA List<Deltaker> deltakere = hente liste over alle deltakere
-		List<Participant> participant = new ArrayList<Participant>();
-		Participant part = new Participant();
-		part.setFirstname("bob");
-		part.setSurname("bobbson");
-		part.setSex(true);
-		part.setPaid(false);
-		participant.add(part);
-		request.setAttribute("users", participant);
+		// try
+		List<Participant> participants = new ArrayList<Participant>(partEAO.listAllParticipants());
+		// catch
 		
+		DataUtil.sortList(participants);
+		
+		request.setAttribute("users", participants);
 		request.getRequestDispatcher(URLMappings.USERLIST_JSP_URL).forward(request, response);
 	}
 
