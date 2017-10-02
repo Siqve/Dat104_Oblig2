@@ -5,15 +5,15 @@ import java.util.regex.Pattern;
 public class InputControl {
 	
 	public static boolean isValidFornavn(String fName) {
-		return Pattern.matches("[a-zA-Z]+", fName);
+		return Pattern.matches("^[A-Zֶ״ֵ][a-zזרו -]{1,19}$", fName);
 	}
 	
 	public static boolean isValidEtternavn(String sName) {
-		return Pattern.matches("[a-zA-Z]+", sName);
+		return Pattern.matches("^[A-Zֶ״ֵ][a-zזרו-]{1,19}$", sName);
 	}
 	
 	public static boolean isValidMobilnummer(String phNr) {
-		return (phNr.length() == 8 && phNr.matches("[0-9]+"));
+		return (phNr.matches("[0-9]{8}"));
 	}
 	
 	public static boolean isNullOrEmpty(String s) {

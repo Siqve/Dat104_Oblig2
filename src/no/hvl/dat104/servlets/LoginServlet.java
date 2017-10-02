@@ -14,12 +14,13 @@ import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
-@WebServlet("/login")
+@WebServlet
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		// Antar at login er ett brukstilfelle, men at aktør enten er "deltaker" eller
 		// "kasserer". Bruker derfor samme servlet.
 
@@ -50,7 +51,6 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO: Husk meg button
-		// TODO: Velge check-metode; "participant" eller "cashier"
 		checkAndLogin(request, (String) request.getSession().getAttribute("loginmethod"));
 		response.sendRedirect(URLMappings.LOGIN_URL);
 	}
@@ -95,10 +95,12 @@ public class LoginServlet extends HttpServlet {
 			} else {
 				FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
 			}
-			
+
 		} else if (loginmethod.equals("cashier")) { // Utfør checkAndLogin for "cashier"
 
-			String passord = request.getParameter("cashierpwd");
+			// request.getParameter("cashierpwd");
+			String passord = getServletConfig().getInitParameter("cashierpwd");
+
 			if (InputControl.isNullOrEmpty(passord)) {
 				FlashUtil.addInfoFlash(request, "Vennligst oppgi passord.");
 				return;

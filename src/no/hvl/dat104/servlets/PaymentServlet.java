@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.utils.DataUtil;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
@@ -40,11 +41,22 @@ public class PaymentServlet extends HttpServlet {
 		
 		Participant part2 = new Participant();
 		part2.setPhonenumber("87654321");
-		part2.setFirstname("anne");
-		part2.setSurname("anneson");
-		part2.setSex("female");
+		part2.setFirstname("bob");
+		part2.setSurname("bobbsen");
+		part2.setSex("male");
 		part2.setPaid(true);
 		participants.add(part2);
+		
+
+		Participant part3 = new Participant();
+		part3.setPhonenumber("87654321");
+		part3.setFirstname("anne");
+		part3.setSurname("annesen");
+		part3.setSex("female");
+		part3.setPaid(false);
+		participants.add(part3);
+		
+		DataUtil.sortList(participants);
 		
 		request.setAttribute("participants", participants);
 		request.getRequestDispatcher(URLMappings.PAYMENTLIST_JSP_URL).forward(request, response);

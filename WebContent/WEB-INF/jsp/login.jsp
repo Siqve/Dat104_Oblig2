@@ -22,7 +22,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<c:choose>
 					<c:when test="${sessionScope.loginmethod eq 'participant'}">
-						<li><a href="#"><span class="glyphicon glyphicon-user"></span>
+						<li><a href="register"><span class="glyphicon glyphicon-user"></span>
 								Meld deg på</a></li>
 						<li><a href="?loginmethod=cashier"><span
 								class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>

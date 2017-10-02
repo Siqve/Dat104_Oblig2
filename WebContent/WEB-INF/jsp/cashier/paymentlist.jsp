@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -32,8 +33,11 @@
 							<c:forEach items="${requestScope.participants }" var="user">
 
 								<tr>
-									<td>${user.firstname }&nbsp;${user.surname }</td>
-									<td>${user.phonenumber}</td>
+									<td style="vertical-align: middle">${user.firstname }&nbsp;${user.surname }</td>
+									<td style="vertical-align: middle">
+										<c:set var="nr" value="${user.phonenumber}" /> 
+										${fn:substring(nr, 0, 3) }&nbsp;${fn:substring(nr, 3, 5) }&nbsp;${fn:substring(nr, 5, 8) }
+									</td>
 									<td style="text-align: center;"><c:choose>
 											<c:when test="${user.paid eq true}">
 												<c:out value="Betaling mottatt." />
@@ -46,8 +50,7 @@
 														type="hidden" name="payer" value="${user.phonenumber}" />
 												</form>
 											</c:otherwise>
-										</c:choose>
-									</td>
+										</c:choose></td>
 								</tr>
 							</c:forEach>
 						</c:if>
