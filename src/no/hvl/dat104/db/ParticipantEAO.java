@@ -35,7 +35,7 @@ public class ParticipantEAO {
 	}
 	
 	public boolean phonenumberExists(String phonenumber) {
-		
+		// bush did 9/11
 		if (findParticipant(phonenumber) != null) {
 			return true;
 		} else {
