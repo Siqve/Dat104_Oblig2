@@ -24,22 +24,29 @@
 		<div style="width: 40%; margin: 10px auto">
 			<h3 style="text-align: center">Dette er deltakerene så langt:</h3>
 			<div style="width: 50%; margin: auto">
-				<table class="table" border="1" style="width: 100%">
+				<table class="table" style="width: 100%">
 					<thead class="thead-default">
 						<tr bgcolor="#cccccc">
-							<th style="padding-left: 10px">Kjønn</th>
-							<th style="padding-left: 10px">Navn</th>
+							<th>Kjønn</th>
+							<th>Navn</th>
 						</tr>
 					</thead>
 					<c:if test="${not empty requestScope.users }">
 						<c:forEach items="${requestScope.users }" var="user">
 							<!-- 			tr if-else  -->
 							<c:choose>
-								<c:when test="${user.paid==true}">
-									<tr bgcolor="#b1ffaa">
+								<c:when test="${user.phonenumber == activeUser.phonenumber}">
+									<c:choose>
+										<c:when test="${user.paid==true}">
+											<tr bgcolor="#b1ffaa">
+										</c:when>
+										<c:otherwise>
+											<tr bgcolor="#ffaaaa">
+											</c:otherwise>
+									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<tr bgcolor="#ffaaaa">
+									<tr>
 								</c:otherwise>
 							</c:choose>
 							<!-- 				td if-else -->
