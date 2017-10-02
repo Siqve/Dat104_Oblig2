@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class ParticipantEAO {
 
-	@PersistenceContext(name = "varePersistenceUnit")
+	@PersistenceContext(name = "participantPersistenceUnit")
 	private EntityManager em;
 
 	public void addParticipant(Participant p) {
@@ -35,7 +35,7 @@ public class ParticipantEAO {
 	}
 	
 	public boolean phonenumberExists(String phonenumber) {
-		// bush did 9/11
+		// bush did 9/118
 		if (findParticipant(phonenumber) != null) {
 			return true;
 		} else {
