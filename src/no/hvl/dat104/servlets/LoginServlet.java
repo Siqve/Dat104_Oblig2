@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO: Husk meg button
-		checkAndLogin(request, (String) request.getSession().getAttribute("loginmethod"));
+		checkAndLogin(request, request.getParameter("cashier"));
 		response.sendRedirect(URLMappings.LOGIN_URL);
 	}
 
@@ -65,9 +65,15 @@ public class LoginServlet extends HttpServlet {
 		request.setAttribute("inputplaceholder", "Mobilnummer");
 	}
 
-	public void checkAndLogin(HttpServletRequest request, String loginmethod) {
-
-		if (loginmethod.equals("participant")) { // Utfør checkAndLogin for "participant"
+	public void checkAndLogin(HttpServletRequest request, String cashierParsed) {
+		boolean cashier;
+		try {
+			cashier = Boolean.valueOf(cashierParsed);
+		} catch (Exception e) {
+			cashier = false;
+		}
+		
+		if (!cashier) { // Utfør checkAndLogin for "participant"
 
 			String mobilnr = request.getParameter("phonenumber");
 			if (InputControl.isNullOrEmpty(mobilnr)) {
@@ -92,7 +98,7 @@ public class LoginServlet extends HttpServlet {
 				FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
 			}
 
-		} else if (loginmethod.equals("cashier")) { // Utfør checkAndLogin for "cashier"
+		} else { // Utfør checkAndLogin for "cashier"
 
 			// request.getParameter("cashierpwd");
 			String passord = getServletConfig().getInitParameter("cashierpwd");

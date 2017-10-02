@@ -43,7 +43,8 @@
 		
 		</h1>
 		<div style="width: 20%; margin: 20px auto">
-			<form method="POST">
+			<form action="./" method="POST">
+				<input type="hidden" name="cashier" value="${requestScope.loginmethod eq 'cashier'}">
 				<div class="form-group">
 					<input name="${requestScope.inputtype}" type="password"
 						placeholder="${requestScope.inputplaceholder}"
