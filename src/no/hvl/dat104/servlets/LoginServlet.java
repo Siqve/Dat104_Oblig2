@@ -35,43 +35,45 @@ public class LoginServlet extends HttpServlet {
 		if (request.getSession().isNew()) {
 			setParticipantLogin(request);
 		} else {
-			if (request.getParameter("loginmethod") == null
-					|| request.getParameter("loginmethod").equals("participant")) {
-				// TODO: Set session-attributt "loginmethod" = cashier
-				setParticipantLogin(request);
-			} else if (request.getParameter("loginmethod").equals("cashier")) {
-				// TODO: Set session-attributt "loginmethod" = deltaker
+			if (request.getParameter("cashier") != null) {
 				setCashierLogin(request);
+			} else {
+				setParticipantLogin(request);
 			}
 		}
-
 		request.getRequestDispatcher(URLMappings.LOGIN_JSP_URL).forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO: Husk meg button
-		checkAndLogin(request, (String) request.getSession().getAttribute("loginmethod"));
+		checkAndLogin(request, request.getParameter("cashier"));
 		response.sendRedirect(URLMappings.LOGIN_URL);
 	}
 
 	private void setCashierLogin(HttpServletRequest request) {
-		request.getSession().setAttribute("loginmethod", "cashier");
-		request.getSession().setAttribute("logintext", "Kasserer login: ");
-		request.getSession().setAttribute("inputtype", "cashierpwd");
-		request.getSession().setAttribute("inputplaceholder", "Passord");
+		request.setAttribute("loginmethod", "cashier");
+		request.setAttribute("logintext", "Kasserer login: ");
+		request.setAttribute("inputtype", "cashierpwd");
+		request.setAttribute("inputplaceholder", "Passord");
 	}
 
 	private void setParticipantLogin(HttpServletRequest request) {
-		request.getSession().setAttribute("loginmethod", "participant");
-		request.getSession().setAttribute("logintext", "Logg inn: ");
-		request.getSession().setAttribute("inputtype", "phonenumber");
-		request.getSession().setAttribute("inputplaceholder", "Mobilnummer");
+		request.setAttribute("loginmethod", "participant");
+		request.setAttribute("logintext", "Logg inn: ");
+		request.setAttribute("inputtype", "phonenumber");
+		request.setAttribute("inputplaceholder", "Mobilnummer");
 	}
 
-	public void checkAndLogin(HttpServletRequest request, String loginmethod) {
-
-		if (loginmethod.equals("participant")) { // Utfør checkAndLogin for "participant"
+	public void checkAndLogin(HttpServletRequest request, String cashierParsed) {
+		boolean cashier;
+		try {
+			cashier = Boolean.valueOf(cashierParsed);
+		} catch (Exception e) {
+			cashier = false;
+		}
+		
+		if (!cashier) { // Utfør checkAndLogin for "participant"
 
 			String mobilnr = request.getParameter("phonenumber");
 			if (InputControl.isNullOrEmpty(mobilnr)) {
@@ -96,7 +98,7 @@ public class LoginServlet extends HttpServlet {
 				FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
 			}
 
-		} else if (loginmethod.equals("cashier")) { // Utfør checkAndLogin for "cashier"
+		} else { // Utfør checkAndLogin for "cashier"
 
 			// request.getParameter("cashierpwd");
 			String passord = getServletConfig().getInitParameter("cashierpwd");

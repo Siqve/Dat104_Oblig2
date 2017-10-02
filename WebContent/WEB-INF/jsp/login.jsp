@@ -21,14 +21,14 @@
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<c:choose>
-					<c:when test="${sessionScope.loginmethod eq 'participant'}">
+					<c:when test="${requestScope.loginmethod eq 'participant'}">
 						<li><a href="register"><span class="glyphicon glyphicon-user"></span>
 								Meld deg på</a></li>
-						<li><a href="?loginmethod=cashier"><span
+						<li><a href="?cashier"><span
 								class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>
 					</c:when>
 
-					<c:when test="${sessionScope.loginmethod eq 'cashier'}">
+					<c:when test="${requestScope.loginmethod eq 'cashier'}">
 						<li><a href="."><span class="glyphicon glyphicon-log-in"></span>
 								Deltaker Login</a></li>
 					</c:when>
@@ -39,14 +39,15 @@
 	<div class="container">
 		<h1 style="text-align: center">
 		
-		<c:out value="${sessionScope.logintext}" />
+		<c:out value="${requestScope.logintext}" />
 		
 		</h1>
 		<div style="width: 20%; margin: 20px auto">
-			<form method="POST">
+			<form action="./" method="POST">
+				<input type="hidden" name="cashier" value="${requestScope.loginmethod eq 'cashier'}">
 				<div class="form-group">
-					<input name="${sessionScope.inputtype}" type="password"
-						placeholder="${sessionScope.inputplaceholder}"
+					<input name="${requestScope.inputtype}" type="password"
+						placeholder="${requestScope.inputplaceholder}"
 						class="form-control">
 				</div>
 				<div class="checkbox">
