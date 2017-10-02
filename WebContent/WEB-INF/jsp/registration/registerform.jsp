@@ -14,6 +14,17 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Fest!</a>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+				<li><a href="./"><span class="glyphicon glyphicon-log-in"></span> Deltaker Login</a></li>
+				<li><a href="./?cashier"><span class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>
+		</ul>
+	</div>
+	</nav>
 	<div class="container">
 		<h1 style="text-align: center">Registrer deg:</h1>
 		<div style="width: 20%; margin: 20px auto">
@@ -31,13 +42,11 @@
 					<input name="phonenumber" type="text" placeholder="Mobilnummer"
 						class="form-control">
 				</div>
-				<label class="radio-inline">
-					<input checked="checked" type="radio" name="sex">Mann
-				</label> 
-				<label class="radio-inline">
-					<input type="radio" name="sex">Kvinne
-				</label> 
-				<input type="submit" value="Registrer meg!" class="btn btn-lg btn-primary btn-block" style="margin-top: 5px"/>
+				<label class="radio-inline"> <input checked="checked"
+					type="radio" name="sex">Mann
+				</label> <label class="radio-inline"> <input type="radio" name="sex">Kvinne
+				</label> <input type="submit" value="Registrer meg!"
+					class="btn btn-lg btn-primary btn-block" style="margin-top: 5px" />
 			</form>
 
 			<c:if test="${not empty flash}">
