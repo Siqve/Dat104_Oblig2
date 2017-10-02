@@ -15,17 +15,19 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="#">Fest!</a>
 			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><p class="navbar-text">${activeUser.firstname } ${activeUser.surname }</p></li>
+			</ul>
 		</div>
 	</nav>
 	<div class="container">
 		<div style="width: 40%; margin: 10px auto">
-			<h1 style="text-align: center">Heisann ${activeUser.firstname }!</h1>
 			<h3 style="text-align: center">Dette er deltakerene så langt:</h3>
 			<div style="width: 50%; margin: auto">
 				<table border="1" style="width: 100%">
 					<tr bgcolor="#cccccc">
-						<th>Kjønn</th>
-						<th align="left">Navn</th>
+						<th style="padding-left: 10px">Kjønn</th>
+						<th style="padding-left: 10px">Navn</th>
 					</tr>
 
 					<c:if test="${not empty requestScope.users }">
@@ -48,7 +50,7 @@
 									<td align="center">&#9792;</td>
 								</c:otherwise>
 							</c:choose>
-							<td>${user.firstname }${user.surname }</td>
+							<td style="padding-left: 10px">${user.firstname }${user.surname }</td>
 							</tr>
 						</c:forEach>
 					</c:if>
