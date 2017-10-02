@@ -5,11 +5,11 @@ import java.util.regex.Pattern;
 public class InputControl {
 	
 	public static boolean isValidFornavn(String fName) {
-		return Pattern.matches("^[A-ZÆØÅ][a-zæøå -]{1,19}$", fName);
+		return Pattern.matches("^[A-ZÆØÅ][a-zæøåA-ZÆØÅ -]{1,19}$", fName);
 	}
 	
 	public static boolean isValidEtternavn(String sName) {
-		return Pattern.matches("^[A-ZÆØÅ][a-zæøå-]{1,19}$", sName);
+		return Pattern.matches("^[A-ZÆØÅ][a-zæøåA-ZÆØÅ-]{1,19}$", sName);
 	}
 	
 	public static boolean isValidMobilnummer(String phNr) {
