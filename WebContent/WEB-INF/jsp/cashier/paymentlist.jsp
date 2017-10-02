@@ -15,11 +15,18 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Fest!</a>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<div style="width: 40%; margin: 10px auto">
-			<h1>Betalingsoversikt:</h1>
-			<div style="width: 50%">
-				<table class="table">
+			<h1 style="text-align: center">Betalingsoversikt:</h1>
+			<div>
+				<table class="table" style="width: auto; margin: auto">
 					<thead class="thead-default">
 						<tr bgcolor="#cccccc">
 							<th>Navn</th>
@@ -56,7 +63,7 @@
 						</c:if>
 					</tbody>
 				</table>
-				<form method="post" style="margin-top: 10px;">
+				<form method="post" style="margin: 10px auto; width: ">
 					<input type="submit" name="logout" value="Ferdig"
 						class="btn btn-md btn-primary btn-block" />
 				</form>

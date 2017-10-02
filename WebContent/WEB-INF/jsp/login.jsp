@@ -20,10 +20,10 @@
 				<a class="navbar-brand" href="#">Fest!</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="register"><span class="glyphicon glyphicon-user"></span>
+						Meld deg på</a></li>
 				<c:choose>
 					<c:when test="${requestScope.loginmethod eq 'participant'}">
-						<li><a href="register"><span class="glyphicon glyphicon-user"></span>
-								Meld deg på</a></li>
 						<li><a href="?cashier"><span
 								class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>
 					</c:when>
@@ -49,10 +49,6 @@
 					<input name="${requestScope.inputtype}" type="password"
 						placeholder="${requestScope.inputplaceholder}"
 						class="form-control">
-				</div>
-				<div class="checkbox">
-					<label><input type="checkbox" name="remember" value="1">Husk
-						meg</label>
 				</div>
 				<input type="submit" value="Logg inn"
 					class="btn btn-lg btn-primary btn-block" />

@@ -10,11 +10,18 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Fest!</a>
+			</div>
+		</div>
+	</nav>
 	<div class="container">
 		<div style="width: 40%; margin: 10px auto">
-			<h1>Heisann ${activeUser.firstname }!</h1>
-			<h3>Dette er deltakerene så langt:</h3>
-			<div style="width: 50%">
+			<h1 style="text-align: center">Heisann ${activeUser.firstname }!</h1>
+			<h3 style="text-align: center">Dette er deltakerene så langt:</h3>
+			<div style="width: 50%; margin: auto">
 				<table border="1" style="width: 100%">
 					<tr bgcolor="#cccccc">
 						<th>Kjønn</th>
@@ -41,9 +48,9 @@
 									<td align="center">&#9792;</td>
 								</c:otherwise>
 							</c:choose>
-							<td>${user.firstname } ${user.surname }</td>
+							<td>${user.firstname }${user.surname }</td>
 							</tr>
-						</c:forEach> 
+						</c:forEach>
 					</c:if>
 
 				</table>
