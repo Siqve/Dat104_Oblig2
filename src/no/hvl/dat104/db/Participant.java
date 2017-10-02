@@ -19,7 +19,7 @@ public class Participant implements Comparable<Participant> {
 	private String surname;
 
 	@Column
-	private String sex;
+	private boolean sex;
 
 	@Column
 	private boolean paid;
@@ -48,11 +48,11 @@ public class Participant implements Comparable<Participant> {
 		this.surname = surname;
 	}
 
-	public String getSex() {
+	public boolean getSex() {
 		return sex;
 	}
 
-	public void setSex(String sex) {
+	public void setSex(boolean sex) {
 		this.sex = sex;
 	}
 
