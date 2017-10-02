@@ -24,33 +24,34 @@
 		<div style="width: 40%; margin: 10px auto">
 			<h3 style="text-align: center">Dette er deltakerene så langt:</h3>
 			<div style="width: 50%; margin: auto">
-				<table border="1" style="width: 100%">
-					<tr bgcolor="#cccccc">
-						<th style="padding-left: 10px">Kjønn</th>
-						<th style="padding-left: 10px">Navn</th>
-					</tr>
-
+				<table class="table" border="1" style="width: 100%">
+					<thead class="thead-default">
+						<tr bgcolor="#cccccc">
+							<th style="padding-left: 10px">Kjønn</th>
+							<th style="padding-left: 10px">Navn</th>
+						</tr>
+					</thead>
 					<c:if test="${not empty requestScope.users }">
 						<c:forEach items="${requestScope.users }" var="user">
 							<!-- 			tr if-else  -->
 							<c:choose>
 								<c:when test="${user.paid==true}">
-									<tr bgcolor="#ffaaaa">
+									<tr bgcolor="#b1ffaa">
 								</c:when>
 								<c:otherwise>
-									<tr bgcolor="#b1ffaa">
+									<tr bgcolor="#ffaaaa">
 								</c:otherwise>
 							</c:choose>
 							<!-- 				td if-else -->
 							<c:choose>
 								<c:when test="${user.sex=='male'}">
-									<td align="center">&#9794;</td>
+									<td align="center">&#9792;</td>
 								</c:when>
 								<c:otherwise>
-									<td align="center">&#9792;</td>
+									<td align="center">&#9794;</td>
 								</c:otherwise>
 							</c:choose>
-							<td style="padding-left: 10px">${user.firstname }${user.surname }</td>
+							<td style="padding-left: 10px">${user.firstname} ${user.surname }</td>
 							</tr>
 						</c:forEach>
 					</c:if>
@@ -58,7 +59,7 @@
 				</table>
 				<form method="post" style="margin-top: 10px;">
 					<input type="submit" name="logout" value="Ferdig"
-						class="btn btn-lg btn-primary btn-block" />
+						class="btn btn-md btn-primary btn-block" />
 				</form>
 			</div>
 

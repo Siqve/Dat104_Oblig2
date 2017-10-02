@@ -2,6 +2,7 @@ package no.hvl.dat104.servlets;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
+import no.hvl.dat104.db.ParticipantEAO;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
@@ -17,6 +19,9 @@ import no.hvl.dat104.utils.URLMappings;
 @WebServlet
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+	@EJB
+	ParticipantEAO partEAO;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -68,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 		request.setAttribute("inputtype", "phonenumber");
 		request.setAttribute("inputplaceholder", "Mobilnummer");
 	}
-	
+
 	private boolean getHiddenBoolParam(String param) {
 		boolean val;
 		try {
@@ -93,13 +98,8 @@ public class LoginServlet extends HttpServlet {
 			// request.getSession().setAttribute("activeUser", bruker);
 
 			// Dummydata
-			if (mobilnr.equals("97088875")) {
-				Participant part = new Participant();
-				part.setFirstname("bob");
-				part.setSurname("bobbson");
-				part.setPhonenumber(mobilnr);
-				part.setSex(true);
-				part.setPaid(false);
+			Participant part;
+			if ((part = partEAO.findParticipant(mobilnr)) != null) {
 				SessionControl.logInUser(request, part);
 			} else {
 				FlashUtil.addErrorFlash(request, "Bruker eksisterer ikke!");
