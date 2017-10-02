@@ -92,6 +92,7 @@ public class RegisterServlet extends HttpServlet {
 		part.setSurname(request.getParameter("surname"));
 		part.setPhonenumber(request.getParameter("phonenumber"));
 		part.setSex(Boolean.valueOf(request.getParameter("sex")));
+		part.setPaid(false);
 	
 		// TODO: Persist to DB
 		// Try
