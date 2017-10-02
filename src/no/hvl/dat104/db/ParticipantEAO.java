@@ -35,6 +35,7 @@ public class ParticipantEAO {
 	}
 	
 	public boolean phonenumberExists(String phonenumber) {
+		
 		if (findParticipant(phonenumber) != null) {
 			return true;
 		} else {
