@@ -43,8 +43,8 @@
 						class="form-control">
 				</div>
 				<label class="radio-inline"> <input checked="checked"
-					type="radio" name="sex">Mann
-				</label> <label class="radio-inline"> <input type="radio" name="sex">Kvinne
+					type="radio" name="sex" value="true">Mann
+				</label> <label class="radio-inline"> <input type="radio" name="sex" value="false">Kvinne
 				</label> <input type="submit" value="Registrer meg!"
 					class="btn btn-lg btn-primary btn-block" style="margin-top: 5px" />
 			</form>

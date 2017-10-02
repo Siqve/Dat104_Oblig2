@@ -33,7 +33,7 @@ public class PaymentServlet extends HttpServlet {
 		part1.setPhonenumber("12345678");
 		part1.setFirstname("bob");
 		part1.setSurname("bobbson");
-		part1.setSex("male");
+		part1.setSex(true);
 		part1.setPaid(false);
 		participants.add(part1);
 
@@ -41,7 +41,7 @@ public class PaymentServlet extends HttpServlet {
 		part2.setPhonenumber("87654321");
 		part2.setFirstname("bob");
 		part2.setSurname("bobbsen");
-		part2.setSex("male");
+		part2.setSex(true);
 		part2.setPaid(true);
 		participants.add(part2);
 
@@ -49,7 +49,7 @@ public class PaymentServlet extends HttpServlet {
 		part3.setPhonenumber("87654321");
 		part3.setFirstname("anne");
 		part3.setSurname("annesen");
-		part3.setSex("female");
+		part3.setSex(false);
 		part3.setPaid(false);
 		participants.add(part3);
 

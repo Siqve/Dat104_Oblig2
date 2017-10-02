@@ -31,7 +31,7 @@ public class UserListServlet extends HttpServlet {
 		Participant part = new Participant();
 		part.setFirstname("bob");
 		part.setSurname("bobbson");
-		part.setSex("male");
+		part.setSex(true);
 		part.setPaid(false);
 		participant.add(part);
 		request.setAttribute("users", participant);
