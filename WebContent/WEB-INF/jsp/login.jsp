@@ -20,10 +20,10 @@
 				<a class="navbar-brand" href="#">Fest!</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
+				<li><a href="register"><span class="glyphicon glyphicon-user"></span>
+						Meld deg på</a></li>
 				<c:choose>
 					<c:when test="${requestScope.loginmethod eq 'participant'}">
-						<li><a href="register"><span class="glyphicon glyphicon-user"></span>
-								Meld deg på</a></li>
 						<li><a href="?cashier"><span
 								class="glyphicon glyphicon-log-in"></span> Kasserer Login</a></li>
 					</c:when>
