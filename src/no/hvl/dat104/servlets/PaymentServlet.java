@@ -61,12 +61,13 @@ public class PaymentServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String logout = request.getParameter("logout");
 
 		// Logout has been pressed
-		if (logout != null) {
+		if (request.getParameter("logout") != null) {
 			SessionControl.logOutCashier(request);
 			FlashUtil.addInfoFlash(request, "Du har blitt logget ut!");
+		} else if (request.getParameter("payer") != null) {
+			//TODO: DB connection
 		}
 		response.sendRedirect(URLMappings.PAYMENTLIST_URL);
 		
