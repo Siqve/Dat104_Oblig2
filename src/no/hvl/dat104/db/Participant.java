@@ -1,6 +1,5 @@
 package no.hvl.dat104.db;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,16 +11,12 @@ public class Participant implements Comparable<Participant> {
 	@Id
 	private String phonenumber;
 
-	@Column
 	private String firstname;
 
-	@Column
 	private String surname;
 
-	@Column
 	private boolean sex;
 
-	@Column
 	private boolean paid;
 
 	public String getPhonenumber() {

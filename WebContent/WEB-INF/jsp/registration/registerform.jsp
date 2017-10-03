@@ -31,16 +31,29 @@
 
 			<form method="POST">
 				<div class="form-group">
+				
+				<c:if test="${not empty cookie.validFirstname.value}">
+					<c:set value="${cookie.validFirstname.value }" var="valFirstname"/>
+				</c:if>
+				
+				<c:if test="${not empty cookie.validSurname.value}">
+					<c:set value="${cookie.validSurname.value }" var="valSurname"/>
+				</c:if>
+				
+				<c:if test="${not empty cookie.validPhonenumber.value}">
+					<c:set value="${cookie.validPhonenumber.value }" var="valPhone"/>
+				</c:if>
+				
 					<input name="firstname" type="text" placeholder="Fornavn"
-						class="form-control">
+						class="form-control" value="${valFirstname}">
 				</div>
 				<div class="form-group">
 					<input name="surname" type="text" placeholder="Etternavn"
-						class="form-control">
+						class="form-control" value="${valSurname}">
 				</div>
 				<div class="form-group">
 					<input name="phonenumber" type="text" placeholder="Mobilnummer"
-						class="form-control">
+						class="form-control" value="${valPhone}">
 				</div>
 				<label class="radio-inline"> <input checked="checked"
 					type="radio" name="sex" value="true">Mann

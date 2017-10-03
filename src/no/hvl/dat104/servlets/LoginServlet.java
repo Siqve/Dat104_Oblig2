@@ -25,10 +25,6 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		// Antar at login er ett brukstilfelle, men at aktør enten er "deltaker" eller
-		// "kasserer". Bruker derfor samme servlet.
-
 		if (SessionControl.isLoggedInUser(request)) {
 			response.sendRedirect(URLMappings.USERLIST_URL);
 			return;
@@ -93,11 +89,6 @@ public class LoginServlet extends HttpServlet {
 				return;
 			}
 
-			// TODO: JPA hent alle passorder
-			// Bruker bruker = "SELECT * FROM "brukere" WHERE mobilnr = " + mobilnr
-			// request.getSession().setAttribute("activeUser", bruker);
-
-			// Dummydata
 			Participant part;
 			if ((part = partEAO.findParticipant(mobilnr)) != null) {
 				SessionControl.logInUser(request, part);
@@ -107,7 +98,6 @@ public class LoginServlet extends HttpServlet {
 
 		} else { // Utfør checkAndLogin for "cashier"
 
-			// request.getParameter("cashierpwd");
 			String passord = request.getParameter("cashierpwd");
 
 			if (InputControl.isNullOrEmpty(passord)) {
@@ -115,9 +105,6 @@ public class LoginServlet extends HttpServlet {
 				return;
 			}
 
-			// TODO: hent initparam cashier-passord
-
-			// Dummydata
 			if (passord.equals(getServletConfig().getInitParameter("cashierpwd"))) {
 				SessionControl.logInCashier(request);
 			} else {

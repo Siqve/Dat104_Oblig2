@@ -35,7 +35,6 @@ public class ParticipantEAO {
 	}
 	
 	public boolean phonenumberExists(String phonenumber) {
-		// bush did 9/118
 		return (findParticipant(phonenumber) != null);
 	}
 
