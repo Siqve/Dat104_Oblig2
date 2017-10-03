@@ -2,6 +2,7 @@ package no.hvl.dat104.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
 import no.hvl.dat104.db.ParticipantEAO;
-import no.hvl.dat104.utils.DataUtil;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
@@ -24,20 +24,18 @@ public class UserListServlet extends HttpServlet {
 
 	@EJB
 	ParticipantEAO partEAO;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (!SessionControl.isLoggedInUser(request)) {
 			response.sendRedirect(URLMappings.LOGIN_URL);
 			return;
 		}
-		
-		// try
+
 		List<Participant> participants = new ArrayList<Participant>(partEAO.listAllParticipants());
-		// catch
-		
-		DataUtil.sortList(participants);
-		
+
+		Collections.sort(participants);
+
 		request.setAttribute("users", participants);
 		request.getRequestDispatcher(URLMappings.USERLIST_JSP_URL).forward(request, response);
 	}
@@ -50,8 +48,7 @@ public class UserListServlet extends HttpServlet {
 
 	private void checkAndLogout(HttpServletRequest request) {
 		String logout = request.getParameter("logout");
-		
-		// Logout has been pressed
+
 		if (logout != null) {
 			SessionControl.logOutUser(request);
 			FlashUtil.addInfoFlash(request, "Du har blitt logget ut!");

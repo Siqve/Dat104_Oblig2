@@ -2,6 +2,7 @@ package no.hvl.dat104.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
 import no.hvl.dat104.db.ParticipantEAO;
-import no.hvl.dat104.utils.DataUtil;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
@@ -25,7 +25,7 @@ public class PaymentServlet extends HttpServlet {
 
 	@EJB
 	ParticipantEAO partEAO;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		if (!SessionControl.isLoggedInCashier(request)) {
@@ -33,10 +33,8 @@ public class PaymentServlet extends HttpServlet {
 			return;
 		}
 
-		// TODO: JPA List<Deltaker> deltakere = hente liste over alle deltakere
-		
 		List<Participant> participants = new ArrayList<>(partEAO.listAllParticipants());
-		DataUtil.sortList(participants);
+		Collections.sort(participants);
 
 		request.setAttribute("participants", participants);
 		request.getRequestDispatcher(URLMappings.PAYMENTLIST_JSP_URL).forward(request, response);
@@ -45,7 +43,7 @@ public class PaymentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String payer;
-		// Logout has been pressed
+
 		if (request.getParameter("logout") != null) {
 			SessionControl.logOutCashier(request);
 			FlashUtil.addInfoFlash(request, "Du har blitt logget ut!");
@@ -57,10 +55,5 @@ public class PaymentServlet extends HttpServlet {
 			}
 		}
 		response.sendRedirect(URLMappings.PAYMENTLIST_URL);
-		
-		// TODO: Registrer og utfør betaling
-		// TODO: Hent parameter fra request som bestemmer hvilken "participant" som skal
-		// betale
 	}
-
 }

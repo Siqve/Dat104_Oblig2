@@ -6,39 +6,34 @@ import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import no.hvl.dat104.db.Participant;
 import no.hvl.dat104.db.ParticipantEAO;
+import no.hvl.dat104.utils.ErrorUtils;
 import no.hvl.dat104.utils.FlashUtil;
 import no.hvl.dat104.utils.InputControl;
 import no.hvl.dat104.utils.SessionControl;
 import no.hvl.dat104.utils.URLMappings;
 
-/**
- * Servlet implementation class RegisterServlet
- */
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private ParticipantEAO partEAO;
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// TODO: get participant-object from registration and check if not null
-		// TODO: if registeredObject != null --> forward to confirmation page
 		if (!request.getSession().isNew() && request.getSession().getAttribute("activeUser") != null) {
-			
 			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_CONF_JSP_URL);
 			dispatcher.forward(request, response);
 		}
 
-		// Forward to registerform.jsp
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(URLMappings.REGISTER_JSP_URL);
 		dispatcher.forward(request, response);
 	}
@@ -46,63 +41,80 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		checkAndRegister(request);
+		checkAndRegister(request, response);
 		response.sendRedirect(URLMappings.REGISTER_URL);
 	}
 
-	private void checkAndRegister(HttpServletRequest request) {
+	private void checkAndRegister(HttpServletRequest request, HttpServletResponse response) {
 
-		// TODO: del opp inputsjekking og lag feilmelding for kvart tilfelle
+		boolean register = true;
+		register = validateInput(request, response);
+
+		if (register)
+			registerParticipant(request);
+	}
+
+	private boolean validateInput(HttpServletRequest request, HttpServletResponse response) {
+
+		String firstname = request.getParameter("firstname");
+		String surname = request.getParameter("surname");
+		String phonenumber = request.getParameter("phonenumber");
+
+		boolean firstnameValid = InputControl.isValidFornavn(firstname);
+		boolean surnameValid = InputControl.isValidEtternavn(surname);
+		boolean phonenumberValid = InputControl.isValidMobilnummer(phonenumber);
+
+		if (!firstnameValid || !surnameValid || !phonenumberValid) {
+			FlashUtil.addErrorFlash(request, ErrorUtils.FORMAT_ERROR);
+
+			if (firstnameValid) {
+				Cookie cookie = new Cookie("validFirstname", firstname);
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
+			}
+
+			if (surnameValid) {
+				Cookie cookie = new Cookie("validSurname", surname);
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
+			}
+
+			if (phonenumberValid) {
+
+				if (partEAO.phonenumberExists(phonenumber)) {
+					FlashUtil.addErrorFlash(request, ErrorUtils.EXISTS_ERROR);
+					return false;
+				}
+
+				Cookie cookie = new Cookie("validPhonenumber", phonenumber);
+				cookie.setMaxAge(30);
+				response.addCookie(cookie);
+			}
+			return false;
+		}
 
 		if (!checkParameters(request)) {
-			FlashUtil.addErrorFlash(request, "Alle felter må fylles ut!");
-
-		} else {
-
-			String firstname, surname, phonenumber;
-
-			firstname = request.getParameter("firstname");
-			surname = request.getParameter("surname");
-			phonenumber = request.getParameter("phonenumber");
-
-			System.out.println(firstname + ", " + surname);
-			
-			String formatError = "Feil format på ett eller flere av inndatafeltene. Prøv igjen.";
-			String alreadyExistsError = "Telefonnummeret er allerede i bruk. Prøv igjen.";
-
-			if (!InputControl.isValidFornavn(firstname))
-				FlashUtil.addErrorFlash(request, formatError);
-			else if (!InputControl.isValidEtternavn(surname))
-				FlashUtil.addErrorFlash(request, formatError);
-			else if (!InputControl.isValidMobilnummer(phonenumber))
-				FlashUtil.addErrorFlash(request, formatError);
-			else if (partEAO.phonenumberExists(phonenumber))
-				FlashUtil.addErrorFlash(request, alreadyExistsError);
-			else
-				registerParticipant(request);
+			FlashUtil.addErrorFlash(request, ErrorUtils.ALL_FIELDS_ERROR);
+			return false;
 		}
+
+		return true;
 	}
 
 	private void registerParticipant(HttpServletRequest request) {
-		
-		// Må ha noke try/catch testing her også dersom DB-problem
-		// TODO: Add mechanics for registering participant to DB here
+
 		Participant part = new Participant();
 		part.setFirstname(request.getParameter("firstname"));
 		part.setSurname(request.getParameter("surname"));
 		part.setPhonenumber(request.getParameter("phonenumber"));
 		part.setSex(Boolean.valueOf(request.getParameter("sex")));
 		part.setPaid(false);
-	
-		// TODO: Persist to DB
-		// Try
+
 		partEAO.addParticipant(part);
-		// Catch
-		
+
 		SessionControl.logInUser(request, part);
 	}
 
-	// Burde kanskje vere eigen metode i InputControl-klassen
 	private boolean checkParameters(HttpServletRequest request) {
 		String firstname = request.getParameter("firstname");
 		String surname = request.getParameter("surname");
